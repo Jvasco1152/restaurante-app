@@ -50,43 +50,26 @@ export default function MenuViewer3D({ items }: MenuViewer3DProps) {
 
       {/* Visualizador 3D en el centro */}
       <div style={{ flex: 1, borderRadius: '12px', overflow: 'hidden', backgroundColor: '#ecf0f1' }}>
-        <Canvas shadows dpr={[1, 2]}>
+        <Canvas>
           <PerspectiveCamera makeDefault position={[0, 2, 5]} fov={50} />
 
           {/* Luces */}
-          <ambientLight intensity={0.4} />
-          <spotLight
-            position={[10, 10, 10]}
-            angle={0.15}
-            penumbra={1}
-            intensity={1}
-            castShadow
-          />
-          <pointLight position={[-10, -10, -10]} intensity={0.5} />
+          <ambientLight intensity={0.6} />
+          <directionalLight position={[5, 5, 5]} intensity={0.8} />
+          <pointLight position={[-5, 3, -5]} intensity={0.4} />
 
           {/* Modelo 3D */}
           <MenuItem3D categoria={selectedItem.categoria} autoRotate={true} />
 
-          {/* Sombras */}
-          <ContactShadows
-            position={[0, -1.5, 0]}
-            opacity={0.5}
-            scale={10}
-            blur={2}
-            far={4}
-          />
-
           {/* Ambiente */}
-          <Environment preset="apartment" />
+          <Environment preset="city" />
 
           {/* Controles */}
           <OrbitControls
             enableZoom={true}
             enablePan={false}
-            minPolarAngle={0}
+            minPolarAngle={Math.PI / 6}
             maxPolarAngle={Math.PI / 2}
-            autoRotate={false}
-            autoRotateSpeed={2}
           />
         </Canvas>
       </div>

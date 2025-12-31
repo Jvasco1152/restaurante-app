@@ -88,19 +88,15 @@ export default function MenuItem3D({ categoria, autoRotate = false }: MenuItem3D
         return (
           <group ref={groupRef}>
             <Cylinder args={[0.4, 0.5, 1.5, 32]} position={[0, 0.75, 0]}>
-              <meshPhysicalMaterial
+              <meshStandardMaterial
                 color="#87CEEB"
                 transparent
-                opacity={0.6}
-                roughness={0.1}
-                metalness={0.1}
-                transmission={0.9}
-                thickness={0.5}
+                opacity={0.3}
               />
             </Cylinder>
             {/* Líquido */}
             <Cylinder args={[0.38, 0.45, 1.2, 32]} position={[0, 0.6, 0]}>
-              <meshStandardMaterial color="#FFA500" opacity={0.8} transparent />
+              <meshStandardMaterial color="#FFA500" />
             </Cylinder>
             {/* Pajita */}
             <Cylinder args={[0.05, 0.05, 1.8, 16]} position={[0.3, 1.2, 0]} rotation={[0, 0, 0.3]}>
