@@ -1,12 +1,15 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { menuAPI } from '../services/api'
 import { MenuItem } from '../types'
+
+const MenuViewer3D = lazy(() => import('../components/3d/MenuViewer3D'))
 
 function Menu() {
   const [items, setItems] = useState<MenuItem[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [categoriaActual, setCategoriaActual] = useState<string>('todos')
+  const [view3D, setView3D] = useState(false)
 
   useEffect(() => {
     cargarMenu()
@@ -36,46 +39,65 @@ function Menu() {
   return (
     <div className="page">
       <div className="card">
-        <h1 style={{ marginBottom: '1rem', color: '#2c3e50' }}>Nuestro Menú</h1>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
+          <h1 style={{ margin: 0, color: '#2c3e50' }}>Nuestro Menú</h1>
 
-        {/* Category Filters */}
-        <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
+          {/* 3D Toggle */}
           <button
-            className={`btn ${categoriaActual === 'todos' ? 'btn-primary' : ''}`}
-            onClick={() => setCategoriaActual('todos')}
+            className={`btn ${view3D ? 'btn-success' : 'btn-primary'}`}
+            onClick={() => setView3D(!view3D)}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
           >
-            Todos
-          </button>
-          <button
-            className={`btn ${categoriaActual === 'ENTRADA' ? 'btn-primary' : ''}`}
-            onClick={() => setCategoriaActual('ENTRADA')}
-          >
-            Entradas
-          </button>
-          <button
-            className={`btn ${categoriaActual === 'PRINCIPAL' ? 'btn-primary' : ''}`}
-            onClick={() => setCategoriaActual('PRINCIPAL')}
-          >
-            Platos Principales
-          </button>
-          <button
-            className={`btn ${categoriaActual === 'POSTRE' ? 'btn-primary' : ''}`}
-            onClick={() => setCategoriaActual('POSTRE')}
-          >
-            Postres
-          </button>
-          <button
-            className={`btn ${categoriaActual === 'BEBIDA' ? 'btn-primary' : ''}`}
-            onClick={() => setCategoriaActual('BEBIDA')}
-          >
-            Bebidas
+            <span style={{ fontSize: '1.2rem' }}>{view3D ? '📋' : '🎯'}</span>
+            {view3D ? 'Vista Normal' : 'Vista 3D Interactiva'}
           </button>
         </div>
+
+        {!view3D && (
+          <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
+            <button
+              className={`btn ${categoriaActual === 'todos' ? 'btn-primary' : ''}`}
+              onClick={() => setCategoriaActual('todos')}
+            >
+              Todos
+            </button>
+            <button
+              className={`btn ${categoriaActual === 'ENTRADA' ? 'btn-primary' : ''}`}
+              onClick={() => setCategoriaActual('ENTRADA')}
+            >
+              Entradas
+            </button>
+            <button
+              className={`btn ${categoriaActual === 'PRINCIPAL' ? 'btn-primary' : ''}`}
+              onClick={() => setCategoriaActual('PRINCIPAL')}
+            >
+              Platos Principales
+            </button>
+            <button
+              className={`btn ${categoriaActual === 'POSTRE' ? 'btn-primary' : ''}`}
+              onClick={() => setCategoriaActual('POSTRE')}
+            >
+              Postres
+            </button>
+            <button
+              className={`btn ${categoriaActual === 'BEBIDA' ? 'btn-primary' : ''}`}
+              onClick={() => setCategoriaActual('BEBIDA')}
+            >
+              Bebidas
+            </button>
+          </div>
+        )}
       </div>
 
       {itemsFiltrados.length === 0 ? (
         <div className="card">
           <p>No hay items disponibles en esta categoría.</p>
+        </div>
+      ) : view3D ? (
+        <div className="card" style={{ padding: '1.5rem' }}>
+          <Suspense fallback={<div style={{ padding: '4rem', textAlign: 'center', color: '#7f8c8d' }}>Cargando visualizador 3D...</div>}>
+            <MenuViewer3D items={itemsFiltrados} />
+          </Suspense>
         </div>
       ) : (
         <div className="grid">
