@@ -63,9 +63,18 @@ Esto iniciará automáticamente:
 
 ## Características
 
-### Fase 1 (Actual)
-- ✅ Sistema de reservas online
-- ✅ Menú digital
+### ✅ Implementado
+- Sistema de reservas online
+- Menú digital con categorías
+- **Menú 3D interactivo** (Carrusel 3D con Three.js)
+- Filtros por categoría
+- Datos de ejemplo incluidos
+- Script de inicio automático
 
-### Fase 2 (Futuro)
-- 🔜 Menú en 3D
+### 🎯 Visualización 3D
+- Carrusel 3D giratorio con todos los platos
+- Navegación con flechas y puntos
+- Tarjetas 3D con información completa
+- Efectos de iluminación y sombras
+- Controles de cámara interactivos
+- Toggle entre vista normal y 3D

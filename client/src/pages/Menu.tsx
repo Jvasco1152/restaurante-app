@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 import { menuAPI } from '../services/api'
 import { MenuItem } from '../types'
+import MenuCarousel3D from '../components/3d/MenuCarousel3D'
 
 function Menu() {
   const [items, setItems] = useState<MenuItem[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [categoriaActual, setCategoriaActual] = useState<string>('todos')
+  const [view3D, setView3D] = useState(false)
 
   useEffect(() => {
     cargarMenu()
@@ -36,8 +38,21 @@ function Menu() {
   return (
     <div className="page">
       <div className="card">
-        <h1 style={{ marginBottom: '1rem', color: '#2c3e50' }}>Nuestro Menú</h1>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
+          <h1 style={{ margin: 0, color: '#2c3e50' }}>Nuestro Menú</h1>
 
+          {/* 3D Toggle */}
+          <button
+            className={`btn ${view3D ? 'btn-success' : 'btn-primary'}`}
+            onClick={() => setView3D(!view3D)}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+          >
+            <span style={{ fontSize: '1.2rem' }}>{view3D ? '🎴' : '🎯'}</span>
+            {view3D ? 'Vista Normal' : 'Vista 3D'}
+          </button>
+        </div>
+
+        {/* Category Filters */}
         <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
           <button
             className={`btn ${categoriaActual === 'todos' ? 'btn-primary' : ''}`}
@@ -76,7 +91,13 @@ function Menu() {
         <div className="card">
           <p>No hay items disponibles en esta categoría.</p>
         </div>
+      ) : view3D ? (
+        /* 3D Carousel View */
+        <div className="card" style={{ padding: '1rem', backgroundColor: '#2c3e50' }}>
+          <MenuCarousel3D items={itemsFiltrados} />
+        </div>
       ) : (
+        /* Grid View */
         <div className="grid">
           {itemsFiltrados.map((item) => (
             <div key={item.id} className="card">
