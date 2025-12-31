@@ -55,7 +55,6 @@ export default function MenuCard3D({ item, position, rotation, scale, isActive }
         color="white"
         anchorX="center"
         anchorY="middle"
-        font="/fonts/inter-bold.woff"
       >
         {item.categoria}
       </Text>
@@ -68,7 +67,6 @@ export default function MenuCard3D({ item, position, rotation, scale, isActive }
         anchorX="center"
         anchorY="middle"
         maxWidth={1.8}
-        font="/fonts/inter-bold.woff"
       >
         {item.nombre}
       </Text>
@@ -82,7 +80,6 @@ export default function MenuCard3D({ item, position, rotation, scale, isActive }
         anchorY="middle"
         maxWidth={1.6}
         textAlign="center"
-        font="/fonts/inter-regular.woff"
       >
         {item.descripcion.length > 80
           ? item.descripcion.substring(0, 80) + '...'
@@ -100,7 +97,6 @@ export default function MenuCard3D({ item, position, rotation, scale, isActive }
         color="white"
         anchorX="center"
         anchorY="middle"
-        font="/fonts/inter-bold.woff"
       >
         ${item.precio}
       </Text>
@@ -117,7 +113,6 @@ export default function MenuCard3D({ item, position, rotation, scale, isActive }
         color={item.disponible ? '#27ae60' : '#e74c3c'}
         anchorX="center"
         anchorY="middle"
-        font="/fonts/inter-regular.woff"
       >
         {item.disponible ? 'Disponible' : 'Agotado'}
       </Text>
