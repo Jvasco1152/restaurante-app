@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { menuAPI } from '../services/api'
 import { MenuItem } from '../types'
-import MenuCarousel3D from '../components/3d/MenuCarousel3D'
+
+// Lazy load para evitar errores si 3D falla
+const MenuCarousel3D = lazy(() => import('../components/3d/MenuCarousel3D'))
 
 function Menu() {
   const [items, setItems] = useState<MenuItem[]>([])
@@ -94,7 +96,9 @@ function Menu() {
       ) : view3D ? (
         /* 3D Carousel View */
         <div className="card" style={{ padding: '1rem', backgroundColor: '#2c3e50' }}>
-          <MenuCarousel3D items={itemsFiltrados} />
+          <Suspense fallback={<div style={{ color: 'white', padding: '2rem', textAlign: 'center' }}>Cargando vista 3D...</div>}>
+            <MenuCarousel3D items={itemsFiltrados} />
+          </Suspense>
         </div>
       ) : (
         /* Grid View */
