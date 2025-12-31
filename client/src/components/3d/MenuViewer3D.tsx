@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls, Environment, ContactShadows, PerspectiveCamera } from '@react-three/drei'
+import { OrbitControls } from '@react-three/drei'
 import MenuItem3D from './MenuItem3D'
 import { MenuItem } from '../../types'
 
@@ -49,28 +49,18 @@ export default function MenuViewer3D({ items }: MenuViewer3DProps) {
       </div>
 
       {/* Visualizador 3D en el centro */}
-      <div style={{ flex: 1, borderRadius: '12px', overflow: 'hidden', backgroundColor: '#ecf0f1' }}>
-        <Canvas>
-          <PerspectiveCamera makeDefault position={[0, 2, 5]} fov={50} />
-
-          {/* Luces */}
-          <ambientLight intensity={0.6} />
-          <directionalLight position={[5, 5, 5]} intensity={0.8} />
-          <pointLight position={[-5, 3, -5]} intensity={0.4} />
+      <div style={{ flex: 1, borderRadius: '12px', overflow: 'hidden', backgroundColor: '#1a1a2e' }}>
+        <Canvas camera={{ position: [0, 2, 5], fov: 50 }}>
+          {/* Luces básicas */}
+          <ambientLight intensity={0.8} />
+          <directionalLight position={[5, 5, 5]} intensity={1} />
+          <directionalLight position={[-5, 3, -5]} intensity={0.5} />
 
           {/* Modelo 3D */}
           <MenuItem3D categoria={selectedItem.categoria} autoRotate={true} />
 
-          {/* Ambiente */}
-          <Environment preset="city" />
-
-          {/* Controles */}
-          <OrbitControls
-            enableZoom={true}
-            enablePan={false}
-            minPolarAngle={Math.PI / 6}
-            maxPolarAngle={Math.PI / 2}
-          />
+          {/* Controles simples */}
+          <OrbitControls enableZoom={true} enablePan={false} />
         </Canvas>
       </div>
 
