@@ -13,7 +13,6 @@ interface MenuCard3DProps {
 }
 
 export default function MenuCard3D({ item, position, rotation, scale, isActive }: MenuCard3DProps) {
-  const meshRef = useRef<THREE.Mesh>(null)
   const groupRef = useRef<THREE.Group>(null)
 
   useFrame((state) => {

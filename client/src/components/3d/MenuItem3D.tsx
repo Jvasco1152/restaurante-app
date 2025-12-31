@@ -10,7 +10,7 @@ interface MenuItem3DProps {
 export default function MenuItem3D({ categoria, autoRotate = false }: MenuItem3DProps) {
   const groupRef = useRef<THREE.Group>(null)
 
-  useFrame((state, delta) => {
+  useFrame((_state, delta) => {
     if (groupRef.current && autoRotate) {
       groupRef.current.rotation.y += delta * 0.3
     }

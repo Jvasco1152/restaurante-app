@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { reservasAPI } from '../services/api'
-import { Reserva } from '../types'
 
 function Reservas() {
   const [formData, setFormData] = useState({
