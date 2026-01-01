@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import MenuItem3D from './MenuItem3D'
@@ -10,20 +10,23 @@ interface MenuViewer3DProps {
 
 export default function MenuViewer3D({ items }: MenuViewer3DProps) {
   const [selectedIndex, setSelectedIndex] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
   const selectedItem = items[selectedIndex]
 
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
   return (
-    <div style={{ display: 'flex', height: '80vh', gap: '1rem', flexDirection: 'row' }}>
+    <div className="viewer-3d-container">
       {/* Lista de items a la izquierda */}
-      <div
-        style={{
-          width: '300px',
-          overflowY: 'auto',
-          backgroundColor: '#f8f9fa',
-          borderRadius: '12px',
-          padding: '1rem'
-        }}
-      >
+      <div className="viewer-3d-sidebar">
         <h3 style={{ marginBottom: '1rem', color: '#2c3e50' }}>Selecciona un plato</h3>
         {items.map((item, index) => (
           <div
@@ -49,8 +52,8 @@ export default function MenuViewer3D({ items }: MenuViewer3DProps) {
       </div>
 
       {/* Visualizador 3D en el centro */}
-      <div style={{ flex: 1, borderRadius: '12px', overflow: 'hidden', backgroundColor: '#1a1a2e' }}>
-        <Canvas camera={{ position: [0, 2, 5], fov: 50 }}>
+      <div className="viewer-3d-canvas">
+        <Canvas camera={{ position: isMobile ? [0, 2, 6] : [0, 2, 5], fov: isMobile ? 60 : 50 }}>
           {/* Luces básicas */}
           <ambientLight intensity={0.8} />
           <directionalLight position={[5, 5, 5]} intensity={1} />
@@ -60,22 +63,17 @@ export default function MenuViewer3D({ items }: MenuViewer3DProps) {
           <MenuItem3D categoria={selectedItem.categoria} autoRotate={true} />
 
           {/* Controles simples */}
-          <OrbitControls enableZoom={true} enablePan={false} />
+          <OrbitControls
+            enableZoom={true}
+            enablePan={false}
+            minDistance={isMobile ? 4 : 3}
+            maxDistance={isMobile ? 10 : 12}
+          />
         </Canvas>
       </div>
 
       {/* Información del item a la derecha */}
-      <div
-        style={{
-          width: '300px',
-          backgroundColor: '#f8f9fa',
-          borderRadius: '12px',
-          padding: '1.5rem',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '1rem'
-        }}
-      >
+      <div className="viewer-3d-info">
         <div>
           <span
             style={{
@@ -138,7 +136,9 @@ export default function MenuViewer3D({ items }: MenuViewer3DProps) {
             textAlign: 'center'
           }}
         >
-          <strong>Tip:</strong> Usa el mouse para rotar y hacer zoom en el modelo 3D
+          <strong>Tip:</strong> {isMobile
+            ? 'Usa tus dedos para rotar y hacer zoom en el modelo 3D'
+            : 'Usa el mouse para rotar y hacer zoom en el modelo 3D'}
         </div>
       </div>
     </div>
